@@ -1,4 +1,10 @@
 class WebMock::Stub
+  @method : Symbol
+  @uri : URI
+  @expected_query : Hash(String, String)?
+  @expected_body : String?
+  @expected_headers : HTTP::Headers?
+
   def initialize(@method, uri)
     @uri = parse_uri(uri)
 

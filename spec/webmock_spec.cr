@@ -221,7 +221,7 @@ describe WebMock do
 
   it "matches with query string in with" do
     WebMock.wrap do
-      WebMock.stub(:get, "http://www.example.com").with(query: {"a": 1, "b": 2})
+      WebMock.stub(:get, "http://www.example.com").with(query: {"a": "1", "b": "2"})
 
       response = HTTP::Client.get "http://www.example.com?b=2&a=1"
       response.body.should eq("")
@@ -233,7 +233,7 @@ describe WebMock do
       begin
         HTTP::Client.post("http://www.example.com/foo?a=1", body: "Hello!", headers: HTTP::Headers{"Foo": "Bar"})
       rescue ex : WebMock::NetConnectNotAllowedError
-        ex.message.strip.should eq(
+        ex.message.try &.strip.should eq(
           <<-MSG
 Real HTTP connections are disabled. Unregistered request: POST http://www.example.com with body "Hello!" with headers {"Foo" => "Bar", "Host" => "www.example.com", "Content-Length" => "6"}
 
@@ -253,7 +253,7 @@ MSG
       begin
         HTTP::Client.post("http://www.example.com/foo?a=1")
       rescue ex : WebMock::NetConnectNotAllowedError
-        ex.message.strip.should eq(
+        ex.message.try &.strip.should eq(
           <<-MSG
 Real HTTP connections are disabled. Unregistered request: POST http://www.example.com with headers {"Host" => "www.example.com", "Content-Length" => "0"}
 

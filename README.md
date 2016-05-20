@@ -65,7 +65,7 @@ response.body               #=> "oops"
 
 ```crystal
 WebMock.stub(:get, "www.example.com").
-  with(query: {page: 1, count: 10})
+  with(query: {page: "1", count: "10"})
 
 response = HTTP::Client.get("http://www.example.com?count=10&page=1")
 response.status_code #=> 200
